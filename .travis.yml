@@ -1,0 +1,16 @@
+sudo: false
+os:
+  - linux
+language: node_js
+node_js:
+  - "8"
+env:
+  matrix:
+    - TEST_SUITE=unit
+matrix:
+  fast_finish: true
+  include:
+    - os: linux
+      node_js: "8"
+      env: TEST_SUITE=lint
+script: npm run $TEST_SUITE

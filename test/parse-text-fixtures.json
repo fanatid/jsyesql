@@ -1,0 +1,7 @@
+[{
+  "name": "simple",
+  "text": "-- name: selectAll\nSELECT * FROM table_name;",
+  "queries": {
+    "selectAll": "SELECT * FROM table_name;"
+  }
+}]

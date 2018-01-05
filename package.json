@@ -1,0 +1,33 @@
+{
+  "name": "jsyesql",
+  "version": "1.0.0",
+  "description": "JavaScript port of Yesql",
+  "keywords": [
+    "sql",
+    "yesql"
+  ],
+  "bugs": {
+    "url": "https://github.com/fanatid/jsyesql/issues"
+  },
+  "license": "MIT",
+  "contributors": [
+    "Kirill Fomichev <fanatid@ya.ru> (https://github.com/fanatid)"
+  ],
+  "files": [
+    "index.js"
+  ],
+  "main": "./index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fanatid/jsyesql.git"
+  },
+  "scripts": {
+    "lint": "standard",
+    "test": "npm run lint && npm run unit",
+    "unit": "node test/*.js"
+  },
+  "devDependencies": {
+    "standard": "^10.0.3",
+    "tape": "^4.8.0"
+  }
+}
