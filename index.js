@@ -14,6 +14,9 @@ function parseLine (line) {
   const comment = RE_COMMENT.exec(line)
   if (comment) return { type: 'comment', value: comment[1] }
 
+  const posi = line.indexOf('--')
+  if (posi !== -1) line = line.slice(0, posi - 1)
+
   return { type: 'query', value: line }
 }
 

@@ -19,7 +19,7 @@ const jsyesql = require('jsyesql')
 /*
 queries.sql:
 -- name: selectAll
-SELECT * FROM table_name;
+SELECT * FROM table_name; -- comment
 */
 
 const queries = jsyesql.parseText(fs.readFileSync('./queries.sql', 'utf8'))
