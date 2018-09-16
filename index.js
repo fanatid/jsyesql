@@ -20,12 +20,26 @@ function parseLine (line) {
   return { type: 'query', value: line }
 }
 
-function parseText (text) {
-  let lastTag = null
-  let lastLine = null
+function arrayToObject (queries) {
+  return queries.reduce((obj, item) => {
+    obj[item.name] = item.query
+    return obj
+  }, {})
+}
 
-  return text.split('\n').reduce((queries, line) => {
-    line = parseLine(line)
+function parseTextToArray (text) {
+  let lastLine = null
+  let lastTag = null
+
+  const queries = []
+  function pushQuery (name, query) {
+    const obj = queries.find((query) => query.name === name)
+    if (obj) obj.query += ' ' + query
+    else queries.push({ name, query })
+  }
+
+  for (const lineRaw of text.split('\n')) {
+    const line = parseLine(lineRaw)
     switch (line.type) {
       case 'blank':
       case 'comment':
@@ -33,10 +47,7 @@ function parseText (text) {
 
       case 'query':
         if (lastTag === null) throw new Error('Query without tag')
-
-        let query = line.value
-        if (queries[lastTag] !== undefined) query = queries[lastTag] + ' ' + query
-        queries[lastTag] = query
+        pushQuery(lastTag, line.value)
 
         break
 
@@ -48,10 +59,17 @@ function parseText (text) {
     }
 
     lastLine = line
-    return queries
-  }, {})
+  }
+
+  return queries
+}
+
+function parseTextToObject (text) {
+  return arrayToObject(parseTextToArray(text))
 }
 
 module.exports = {
-  parseText
+  parseTextToArray,
+  parseTextToObject,
+  parseText: parseTextToObject
 }

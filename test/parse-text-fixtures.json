@@ -2,6 +2,12 @@
   "name": "simple",
   "text": "-- name: selectAll\nSELECT * FROM table_name; -- comment",
   "queries": {
-    "selectAll": "SELECT * FROM table_name;"
+    "obj": {
+      "selectAll": "SELECT * FROM table_name;"
+    },
+    "array": [{
+      "name": "selectAll",
+      "query": "SELECT * FROM table_name;"
+    }]
   }
 }]

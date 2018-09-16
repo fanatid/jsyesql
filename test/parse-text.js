@@ -4,8 +4,11 @@ const fixtures = require('./parse-text-fixtures.json')
 
 for (const fixture of fixtures) {
   test(`fixture#${fixture.name}`, (t) => {
-    const queries = jsyesql.parseText(fixture.text)
-    t.same(queries, fixture.queries)
+    const arr = jsyesql.parseTextToArray(fixture.text)
+    t.same(arr, fixture.queries.array)
+
+    const obj = jsyesql.parseTextToObject(fixture.text)
+    t.same(obj, fixture.queries.obj)
 
     t.end()
   })
