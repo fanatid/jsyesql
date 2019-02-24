@@ -69,6 +69,7 @@ function parseTextToObject (text) {
 }
 
 module.exports = {
+  arrayToObject,
   parseTextToArray,
   parseTextToObject,
   parseText: parseTextToObject
