@@ -1,6 +1,5 @@
 [{
   "name": "simple",
-  "text": "-- name: selectAll\nSELECT * FROM table_name; -- comment",
   "queries": {
     "obj": {
       "selectAll": "SELECT * FROM table_name;"

@@ -1,0 +1,4 @@
+-- comment
+
+-- name: selectAll
+SELECT * FROM table_name;
