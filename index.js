@@ -38,21 +38,22 @@ function parseTextToArray (text) {
     else queries.push({ name, query })
   }
 
-  for (const lineRaw of text.split('\n')) {
-    const line = parseLine(lineRaw)
+  const lines = text.split('\n')
+  for (let i = 0; i < lines.length; ++i) {
+    const line = parseLine(lines[i])
     switch (line.type) {
       case 'blank':
       case 'comment':
         break
 
       case 'query':
-        if (lastTag === null) throw new Error('Query without tag')
+        if (lastTag === null) throw new Error(`Query without tag at line ${i + 1}`)
         pushQuery(lastTag, line.value)
 
         break
 
       case 'tag':
-        if (lastLine !== null && lastLine.type === 'tag') throw new Error('Tag overwritten')
+        if (lastLine !== null && lastLine.type === 'tag') throw new Error(`Tag overwritten at line ${i + 1}`)
         lastTag = line.value
 
         break
