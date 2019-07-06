@@ -27,7 +27,8 @@
     "unit": "node test/*.js"
   },
   "devDependencies": {
+    "js-yaml": "^3.13.1",
     "standard": "^12.0.1",
-    "tape": "^4.9.1"
+    "tape": "^4.11.0"
   }
 }

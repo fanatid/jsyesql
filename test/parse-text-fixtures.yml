@@ -1,0 +1,44 @@
+- name: simple
+  queries:
+    - name: selectAll
+      query: SELECT * FROM table_name;
+  text: |
+    -- name: selectAll
+    SELECT * FROM table_name;
+
+- name: with multi line comments
+  queries:
+    - name: selectOne
+      query: SELECT true FROM table_name;
+  text: |
+    /**/
+    -- name: selectOne
+    /* select one record */
+    SELECT
+      true /*
+    true or 1?
+    */
+    FROM table_name;
+
+- name: spaces in name
+  queries:
+    - name: select
+      query: SELECT id FROM table_name;
+  text: |
+     -- name : select
+     SELECT id FROM table_name;
+
+- name: many queries
+  queries:
+    - name: select
+      query: SELECT id FROM table_name;
+    - name: insert
+      query: INSERT INTO table_name (id) VALUES ($1);
+  text: |
+    -- name: select
+    -- select id
+    SELECT id FROM table_name;
+
+    -- name: insert
+    -- insert id
+    INSERT INTO table_name (id) VALUES ($1);
