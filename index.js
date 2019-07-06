@@ -1,34 +1,29 @@
-// -- name: $tag
-const RE_TAG = new RegExp('^\\s*--\\s*name\\s*:\\s*(.+)')
-// -- $comment
-const RE_COMMENT = new RegExp('^\\s*--\\s*(.+)')
+// -- name: MY_QUERY
+const RE_TAG = new RegExp('^\\s*--\\s*name\\s*:(.*)$')
+// everything after `--` is single line comment
+const RE_COMMENT_SINGLE_LINE = new RegExp('--.*$')
+// everything in `/**/` is single/multi line comment
+const RE_COMMENT_MULTI_LINE = new RegExp('\\/\\*.*?\\*\\/', 'gms')
 
 function parseLine (line) {
-  line = line.trim()
+  // first, check is line TAG or not, because TAG defined through comment
+  const tag = RE_TAG.exec(line)
+  if (tag) return { type: 'tag', value: tag[1].trim() }
 
+  // remove comment and trim string
+  line = line.replace(RE_COMMENT_SINGLE_LINE, '').trim()
+
+  // empty line
   if (line === '') return { type: 'blank' }
 
-  const tag = RE_TAG.exec(line)
-  if (tag) return { type: 'tag', value: tag[1] }
-
-  const comment = RE_COMMENT.exec(line)
-  if (comment) return { type: 'comment', value: comment[1] }
-
-  const posi = line.indexOf('--')
-  if (posi !== -1) line = line.slice(0, posi - 1)
-
+  // query or part of query
   return { type: 'query', value: line }
 }
 
-function arrayToObject (queries) {
-  return queries.reduce((obj, item) => {
-    obj[item.name] = item.query
-    return obj
-  }, {})
-}
-
 function parseTextToArray (text) {
-  let lastLine = null
+  text = text.replace(RE_COMMENT_MULTI_LINE, '') // remove multi-line comments
+
+  let lastType = null
   let lastTag = null
 
   const queries = []
@@ -40,26 +35,25 @@ function parseTextToArray (text) {
 
   const lines = text.split('\n')
   for (let i = 0; i < lines.length; ++i) {
-    const line = parseLine(lines[i])
-    switch (line.type) {
+    const { type, value } = parseLine(lines[i])
+    switch (type) {
       case 'blank':
-      case 'comment':
         break
 
       case 'query':
-        if (lastTag === null) throw new Error(`Query without tag at line ${i + 1}`)
-        pushQuery(lastTag, line.value)
+        if (lastTag === null) throw new Error(`Query without tag at line ${i + 1}: ${lines[i]}`)
+        pushQuery(lastTag, value)
 
         break
 
       case 'tag':
-        if (lastLine !== null && lastLine.type === 'tag') throw new Error(`Tag overwritten at line ${i + 1}`)
-        lastTag = line.value
+        if (lastType !== null && lastType === 'tag') throw new Error(`Tag overwritten at line ${i + 1}: ${lines[i]}`)
+        lastTag = value
 
         break
     }
 
-    lastLine = line
+    lastType = type
   }
 
   return queries
@@ -69,9 +63,15 @@ function parseTextToObject (text) {
   return arrayToObject(parseTextToArray(text))
 }
 
+function arrayToObject (queries) {
+  const obj = {}
+  for (const { name, query } of queries) obj[name] = query
+  return obj
+}
+
 module.exports = {
-  arrayToObject,
+  parseText: parseTextToObject,
   parseTextToArray,
   parseTextToObject,
-  parseText: parseTextToObject
+  arrayToObject
 }
