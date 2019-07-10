@@ -64,7 +64,7 @@ function parseTextToObject (text) {
 }
 
 function arrayToObject (queries) {
-  const obj = {}
+  const obj = Object.create(null)
   for (const { name, query } of queries) obj[name] = query
   return obj
 }
