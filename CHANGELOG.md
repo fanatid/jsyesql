@@ -1,3 +1,7 @@
+v1.6.0 / 2019-07-10
+-------------------
+- Return Object without proto
+
 v1.5.0 / 2019-07-06
 -------------------
 - Add engines field to package.json
